@@ -21,14 +21,14 @@ START_URL = "https://www.idealista.it/agenzie-immobiliari-affitto/#municipality-
 BASE_URL = 'https://www.idealista.it'
 # USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115 Safari/537.36"
 USER_AGENT = ua.random
-PROXY = "http://user:pass@proxy_ip:proxy_port"  # <-- Replace with your actual proxy if available
+PROXY = "http://user:pass@proxy_ip:proxy_port"  
 
 # -----------------------------
 def launch_browser():
     options = uc.ChromeOptions()
     options.add_argument("--start-maximized")
     options.add_argument(f"user-agent={USER_AGENT}")
-    # options.add_argument(f"--proxy-server={PROXY}")  # Uncomment if using a proxy
+    # options.add_argument(f"--proxy-server={PROXY}") 
 
     driver = uc.Chrome(options=options)
     wait = WebDriverWait(driver, 20)
@@ -74,8 +74,8 @@ driver, wait = launch_browser()
 driver.get(START_URL)
 simulate_scroll(driver)
 
-cookies_path = "~/idealista_scraper/cookies.pkl"
-os.makedirs("~/idealista_scraper", exist_ok=True)
+cookies_path = "./idealista_scraper/cookies.pkl"
+os.makedirs("./idealista_scraper", exist_ok=True)
 
 if os.path.exists(cookies_path):
     with open(cookies_path, "rb") as f:
@@ -93,13 +93,7 @@ else:
 soup = BeautifulSoup(driver.page_source, 'lxml')
 print(f"\n🔍 Found {len(soup.find_all('ul', class_='locations-list__links'))} location blocks")
 
-# Prepare to store results
-# csv_path = "./idealista_scraper/idealista_agencies.xlsx"
-# data_rows = []
 
-# csv1_path = "./idealista_scraper/missed_idealista_agencies.csv"
-# missed_data = []
-# Prepare to store results
 csv_path = "./idealista_scraper/idealista_agencies.xlsx"
 if os.path.exists(csv_path):
     existing_df = pd.read_excel(csv_path, engine="openpyxl")
